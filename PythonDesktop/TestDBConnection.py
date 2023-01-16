@@ -1,7 +1,10 @@
 import sqlite3
-conn = sqlite3.connect('./DB/TEST.db')
 
-c = conn.cursor()
+DB = './DB/TEST.db'
+
+conn = sqlite3.connect(DB)
+
+cur = conn.cursor()
 
 print("Database created/connected!")
 
