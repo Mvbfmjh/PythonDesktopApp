@@ -1,17 +1,49 @@
 from tkinter import *
 from tkinter import ttk
+import sqlite3
+import os
+
+DBPATH = os.getcwd() + "\\DB"
+dblist = []
+for filepath in os.listdir(DBPATH):
+    file = filepath.split('.')
+    if file[1] == "db":
+        print(filepath + " is a .db file")
+        dblist.append(filepath)
+
+print()
 
 root = Tk()
 root.minsize(500,300)
 
-db_list = ["cheese", "test"]
+def dbselection():
+    try:
+        selection = combo.get()
+        local_DB_path = "./DB/"
+        conn = sqlite3.connect(local_DB_path + selection)
+        #print(selection)
+        cur = conn.cursor()
+
+        sql_query = """SELECT name FROM sqlite_master WHERE type='table';"""
+
+        cur.execute(sql_query)
+
+        rowCount = 0
+
+        for row in cur:
+            print(row)
+    except sqlite3.Error:
+        print("Some error with sqlite3")
+
+    
 
 content = ttk.Frame(root)
 image_frame1 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
 image_frame2 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
 #center_frame = ttk.Frame(content, borderwidth=0, relief="ridge", width=350, height=300)
 label = ttk.Label(content, text="Select DB", font=("Arial", 12))
-combo = ttk.Combobox(content, width=30, values=db_list, font=("Arial", 12))
+combo = ttk.Combobox(content, width=30, values=dblist, font=("Arial", 12))
+combo.bind("<<ComboboxSelected>>", lambda e: dbselection())
 button = ttk.Button(content, text="Select")
 
 content.grid(column=0, row=0, sticky=(N,W,E,S))
