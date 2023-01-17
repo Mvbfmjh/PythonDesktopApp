@@ -1,36 +1,34 @@
-import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 
 root = Tk()
-root.title('My First App')
-root.geometry("400x400")
+root.minsize(500,300)
 
-def OpenNewWindow():
-    newWindow = Toplevel(root)
-    newWindow.title("New Window")
-    newWindow.geometry("300x300")
-    newLabel = ttk.Label(newWindow,
-        text='This is a new window')
-    newLabel.pack()
-    newLabel.bind("<Button-1>", lambda e: GetLabelText(newLabel))
+db_list = ["cheese", "test"]
 
-def GetLabelText(lbl):
-    print(' Label clicked: %s ' % lbl.cget("text"))
+content = ttk.Frame(root)
+image_frame1 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
+image_frame2 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
+#center_frame = ttk.Frame(content, borderwidth=0, relief="ridge", width=350, height=300)
+label = ttk.Label(content, text="Select DB", font=("Arial", 12))
+combo = ttk.Combobox(content, width=30, values=db_list, font=("Arial", 12))
+button = ttk.Button(content, text="Select")
 
-# ウィジェットの作成
-frame1 = ttk.Frame(root, padding=16)
-label1 = ttk.Label(frame1, text='This is the main window')
-button1 = ttk.Button(
-    frame1,
-    text='New Window',
-    command=OpenNewWindow)
+content.grid(column=0, row=0, sticky=(N,W,E,S))
+image_frame1.grid(column=0, row=0, columnspan=1, rowspan=3, padx=10, pady=10, sticky=(N, W, E, S))
+image_frame2.grid(column=2, row=0, columnspan=1, rowspan=3, padx=10, pady=10, sticky=(N, W, E, S))
+#center_frame.grid(column=1, row=0, columnspan=1, rowspan=3, pady=10, sticky=(N, W, E, S))
+label.grid(column=1, row=0, padx=10, pady=10, sticky=S)
+combo.grid(column=1, row=1,  padx=10, pady=10, sticky=(EW))
+button.grid(column=1, row=2, padx=10, pady=10)
 
-# レイアウト
-frame1.pack()
-label1.pack(side=TOP)
-button1.pack(side=BOTTOM)
-label1.bind("<Button-1>", lambda e: GetLabelText(label1))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+content.columnconfigure(0, weight=0)
+content.columnconfigure(1, weight=1)
+content.columnconfigure(2, weight=0)
+content.rowconfigure(0, weight=1)
+content.rowconfigure(1, weight=1)
+content.rowconfigure(2, weight=1)
 
-# ウィンドウの表示開始
 root.mainloop()
