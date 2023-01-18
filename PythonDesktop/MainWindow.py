@@ -3,29 +3,6 @@ from tkinter import ttk
 import sqlite3
 import os
 
-root = Tk()
-root.minsize(500,300)
-
-def dbselection():
-    try:
-        selection = combo.get()
-        local_DB_path = "./DB/"
-        conn = sqlite3.connect(local_DB_path + selection)
-        #print(selection)
-        cur = conn.cursor()
-
-        sql_query = """SELECT name FROM sqlite_master WHERE type='table';"""
-
-        cur.execute(sql_query)
-
-        rowCount = 0
-
-        for row in cur:
-            print(row)
-    except sqlite3.Error:
-        print("Some error with sqlite3")
-
-    
 
 class MainWindow:
     def __init__(self, root):
@@ -50,12 +27,14 @@ class MainWindow:
         self.db_list = dataset.getDataSet()
 
         content = ttk.Frame(root)
+        self.window = content
+
         image_frame1 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
         image_frame2 = ttk.Frame(content, borderwidth=5, relief="ridge", width=150, height=300)
         #center_frame = ttk.Frame(content, borderwidth=0, relief="ridge", width=350, height=300)
         label = ttk.Label(content, text="Select DB", font=("Arial", 12))
         combo = ttk.Combobox(content, width=30, values=self.db_list, font=("Arial", 12))
-        button = ttk.Button(content, text="Select", command=self.changePage)
+        button = ttk.Button(content, text="Select", command=self.dbselected)
 
         content.grid(column=0, row=0, sticky=(N,W,E,S))
         image_frame1.grid(column=0, row=0, columnspan=1, rowspan=3, padx=10, pady=10, sticky=(N, W, E, S))
@@ -74,13 +53,30 @@ class MainWindow:
         content.rowconfigure(1, weight=1)
         content.rowconfigure(2, weight=1)
 
+
     def newPage(self):
         root.title("New page")
         content = ttk.Frame(root)
+        self.window = content
         back_btn = ttk.Button(content, text="Back", command=self.changePage)
 
         content.grid(column=0, row=0, sticky=(N,W,E,S))
         back_btn.grid(column=1, row=1, sticky=(N,W))
+
+    def dbselected(self):
+        selection = None
+        for widget in self.window.winfo_children():
+            #print(widget.winfo_class())
+            if widget.winfo_class() == "TCombobox":
+                selection = widget
+
+        if selection != None and selection.get() != "":
+            print("The selected DB: " + selection.get())
+            #print(selection)
+            self.changePage()
+        else:
+            print("Nothing selected")
+
 
 class dataset:
     def getDataSet():
