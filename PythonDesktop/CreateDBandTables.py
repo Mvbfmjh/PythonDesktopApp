@@ -9,7 +9,7 @@ DB_LIST = ['FE3H.db']
 
 QUERYPATH = "./DB"
 QueryFiles = []
-CREATE_TABLE_QUERY = []
+QUERY = []
 
 # Find all .sql query files
 for filepath in os.listdir(QUERYPATH):
@@ -26,7 +26,9 @@ for sqlfile in QueryFiles:
 		file = open(currpath, "r", encoding="utf-8")
 		data = str(file.read())
 		file.close()
-		CREATE_TABLE_QUERY.append(data)
+		query = data.split(';')
+		for q in query:
+			QUERY.append(q)
 
 # Create DB and execute queries
 for db_file in DB_LIST:
@@ -38,7 +40,8 @@ for db_file in DB_LIST:
 
 	print("Database created/connected!")
 
-	for query in CREATE_TABLE_QUERY:
+	for query in QUERY:
+		print(query)
 		cur.execute(query)
 
 	print("Queries executed...")
@@ -50,6 +53,8 @@ for db_file in DB_LIST:
 	for row in cur:
 		print(row)
 
+
 	cur.close()
+	conn.commit()
 	conn.close()
 

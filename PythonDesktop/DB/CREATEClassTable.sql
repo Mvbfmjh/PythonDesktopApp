@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS Class (
 	クラス名 TEXT,
 	クラス階級 TINYINT,
 	クラス性別 BLOB,
+	クラス移動種 TEXT,
+	有効 TEXT,
 	HP_成長 TINYINT,
 	力_成長 TINYINT,
 	魔力_成長 TINYINT,

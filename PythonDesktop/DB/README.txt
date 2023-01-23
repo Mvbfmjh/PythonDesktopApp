@@ -1,0 +1,1 @@
+The values within INSERT_INTO_XXXX are based on the values obtained on the site: www.pegasusknight.com/wiki/fe16
