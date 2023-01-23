@@ -41,8 +41,17 @@ for db_file in DB_LIST:
 	print("Database created/connected!")
 
 	for query in QUERY:
-		print(query)
-		cur.execute(query)
+		print(query + '\n')
+		try: 
+			cur.execute(query)
+		except NameError:
+			print("Name Error")
+		except ValueError:
+			print("Value error")
+		except IOError:
+			print("IO error")
+		except sqlite3.IntegrityError:
+			print("Data Integrity Error: Failed to execute query... (Maybe Data exists already?)")
 
 	print("Queries executed...")
 
